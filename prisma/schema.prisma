@@ -1,0 +1,80 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int        @id @default(autoincrement())
+  name      String
+  email     String     @unique
+  password  String
+  role      Role       @default(USER) // Enum: USER, ADMIN
+  phone     String?
+  birthday  DateTime?
+  gender    Gender?    // Optional: Enum: MALE, FEMALE, OTHER
+  articles  Article[]  @relation("UserArticles") // Articles authored by the user
+  comments  Comment[]  @relation("UserComments") // Comments by the user
+  likes     Like[]     @relation("UserLikes")    // Likes by the user
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+}
+
+model Article {
+  id        Int       @id @default(autoincrement())
+  title     String
+  content   String
+  authorId  Int
+  author    User      @relation("UserArticles", fields: [authorId], references: [id])
+  images    Image[]   @relation("ArticleImages") // One-to-many relation with Image
+  comments  Comment[] @relation("ArticleComments")
+  likes     Like[]    @relation("ArticleLikes")
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Image {
+  id         Int      @id @default(autoincrement())
+  url        String   // Image URL
+  articleId  Int
+  article    Article  @relation(fields: [articleId], references: [id], name: "ArticleImages")
+  createdAt  DateTime @default(now())
+}
+
+model Comment {
+  id         Int        @id @default(autoincrement())
+  content    String
+  userId     Int
+  articleId  Int
+  parentId   Int?       // Nullable parent comment ID for replies
+  user       User       @relation("UserComments", fields: [userId], references: [id])
+  article    Article    @relation("ArticleComments", fields: [articleId], references: [id])
+  parent     Comment?   @relation("CommentReplies", fields: [parentId], references: [id])
+  replies    Comment[]  @relation("CommentReplies")
+  likes      Like[]     @relation("CommentLikes")
+  createdAt  DateTime   @default(now())
+}
+
+model Like {
+  id         Int        @id @default(autoincrement())
+  userId     Int
+  articleId  Int?       // Nullable to differentiate between article and comment likes
+  commentId  Int?       // Nullable to differentiate between article and comment likes
+  user       User       @relation("UserLikes", fields: [userId], references: [id])
+  article    Article?   @relation("ArticleLikes", fields: [articleId], references: [id])
+  comment    Comment?   @relation("CommentLikes", fields: [commentId], references: [id])
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum Gender {
+  MALE
+  FEMALE
+  OTHER
+}
