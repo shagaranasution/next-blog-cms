@@ -2,9 +2,6 @@ import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
-import type { User } from '@/types';
-
-const JWT_SECRET = process.env.JWT_SECRET || 'your_secret_key';
 
 const prisma = new PrismaClient();
 
@@ -16,7 +13,7 @@ const authOptions: NextAuthOptions = {
         email: { label: 'Email', type: 'email' },
         password: { label: 'Password', type: 'password' },
       },
-      async authorize(credentials): Promise<User | null> {
+      async authorize(credentials) {
         const user = await prisma.user.findUnique({
           where: { email: credentials?.email },
         });
@@ -24,10 +21,10 @@ const authOptions: NextAuthOptions = {
           credentials?.password || '',
           user?.password ?? ''
         );
-        console.log('isPasswordValid: ', isPasswordValid);
 
         if (user && isPasswordValid) {
-          return user;
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          return user as any;
         }
 
         return null;
@@ -40,18 +37,23 @@ const authOptions: NextAuthOptions = {
         token.id = user.id;
         token.role = user.role;
       }
+      console.log('Token in jwt callback:', token);
       return token;
     },
     async session({ session, token }) {
-      session.user.id = token.id;
-      session.user.role = token.role;
+      if (session.user) {
+        session.user.id = token.id;
+        session.user.role = token.role;
+      }
+      console.log('Session in session callback:', session);
       return session;
     },
   },
   session: {
     strategy: 'jwt',
+    maxAge: 30 * 24 * 60 * 60, // 30 days
+    updateAge: 24 * 60 * 60, // 24 hours
   },
-  secret: JWT_SECRET,
 };
 
 const handler = NextAuth(authOptions);

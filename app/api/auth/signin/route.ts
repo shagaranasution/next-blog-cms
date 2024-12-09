@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import bcrypt from 'bcrypt';
 import { PrismaClient } from '@prisma/client';
-import { generateToken } from '@/lib/jwt';
+// import { generateToken } from '@/lib/jwt';
 
 const prisma = new PrismaClient();
 
@@ -39,20 +39,15 @@ export async function POST(request: Request) {
     }
 
     // Generate a JWT token
-    const token = generateToken({
-      id: user.id,
-      email: user.email,
-      role: user.role,
-    });
-    // const token = jwt.sign(
-    //   { id: user.id, email: user.email, role: user.role },
-    //   JWT_SECRET,
-    //   { expiresIn: '1h' } // Token expires in 1 hour
-    // );
+    // const token = generateToken({
+    //   id: user.id,
+    //   email: user.email,
+    //   role: user.role,
+    // });
 
     return NextResponse.json({
       message: 'Login successful',
-      token,
+      // token,
       user: {
         id: user.id,
         name: user.name,

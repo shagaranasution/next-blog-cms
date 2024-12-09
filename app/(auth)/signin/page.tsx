@@ -43,41 +43,12 @@ export default function LoginPage() {
     } else {
       setLoading(false);
       setError('');
-      router.push('/dashboard');
+      router.push('/admin/dashboard');
     }
-
-    // try {
-    //   const response = await fetch('/api/auth/login', {
-    //     method: 'POST',
-    //     headers: { 'Content-Type': 'application/json' },
-    //     body: JSON.stringify(formData),
-    //   });
-
-    //   const data = await response.json();
-
-    //   if (!response.ok) {
-    //     throw new Error(data.error || 'Something went wrong');
-    //   }
-    //   console.log('data: ', data);
-    //   // Save token to localStorage or cookies
-    //   localStorage.setItem('token', data.token);
-
-    //   // Redirect to the home page or dashboard
-    //   if (data.user.role === 'ADMIN') {
-    //     router.push('/dashboard');
-    //   } else {
-    //     router.push('/');
-    //   }
-    //   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    // } catch (err: any) {
-    //   setError(err.message);
-    // } finally {
-    //   setLoading(false);
-    // }
   };
 
   if (session) {
-    router.replace('/dashboard');
+    router.replace('/admin/dashboard');
   }
 
   return (

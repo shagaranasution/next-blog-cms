@@ -44,7 +44,7 @@ export default function SignupPage() {
       }
 
       // Redirect to login page after successful signup
-      router.push('/login');
+      router.push('/signin');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
       setError(err.message);
@@ -109,7 +109,7 @@ export default function SignupPage() {
         </form>
         <p className="text-center text-sm text-gray-600 mt-4">
           Already have an account?{' '}
-          <a href="/login" className="text-blue-500 hover:underline">
+          <a href="/signin" className="text-blue-500 hover:underline">
             Log in
           </a>
         </p>
