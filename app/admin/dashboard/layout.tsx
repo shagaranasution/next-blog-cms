@@ -12,16 +12,16 @@ export default async function AdminLayout({
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
         <nav className="flex-1 space-y-4">
           <Link
-            href="/admin/dashboard"
+            href="/admin/dashboard/articles"
             className="block hover:bg-gray-700 p-2 rounded">
-            Manage Posts
+            Manage Articles
           </Link>
         </nav>
         <div>
           <form action="/api/auth/signout" method="POST">
             <button
               type="submit"
-              className="px-4 py-2 bg-red-500 text-white rounded">
+              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
               Sign Out
             </button>
           </form>
