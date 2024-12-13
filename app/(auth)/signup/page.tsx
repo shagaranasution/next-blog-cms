@@ -34,7 +34,7 @@ export default function SignupPage() {
       const response = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...formData, role: 'USER' }),
+        body: JSON.stringify({ ...formData }),
       });
 
       const data = await response.json();
@@ -43,7 +43,6 @@ export default function SignupPage() {
         throw new Error(data.error || 'Something went wrong');
       }
 
-      // Redirect to login page after successful signup
       router.push('/signin');
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (err: any) {
@@ -58,7 +57,7 @@ export default function SignupPage() {
       <h1 className="text-2xl text-gray-700 font-semibold text-center mb-6">
         Sign Up
       </h1>
-      {error && <p className="text-red-500 text-center">{error}</p>}
+      {error && <p className="text-red-500 text-center mb-2">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">

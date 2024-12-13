@@ -35,13 +35,6 @@ export async function POST(request: Request) {
       );
     }
 
-    // Generate a JWT token
-    // const token = generateToken({
-    //   id: user.id,
-    //   email: user.email,
-    //   role: user.role,
-    // });
-
     return NextResponse.json({
       message: 'Login successful',
       // token,

@@ -56,7 +56,7 @@ export default function LoginPage() {
       <h1 className="text-2xl text-gray-700 font-semibold text-center mb-6">
         Login
       </h1>
-      {error && <p className="text-red-500 text-center">{error}</p>}
+      {error && <p className="text-red-500 text-center mb-2">{error}</p>}
       <form onSubmit={handleSubmit}>
         <div className="mb-4">
           <label className="block text-gray-700 text-sm font-bold mb-2">
@@ -88,7 +88,7 @@ export default function LoginPage() {
           type="submit"
           disabled={loading}
           className="w-full py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          {loading ? 'Logging in' : 'Log In'}
+          {loading ? 'Logging in..' : 'Log In'}
         </button>
       </form>
       <p className="text-center text-sm text-gray-600 mt-4">

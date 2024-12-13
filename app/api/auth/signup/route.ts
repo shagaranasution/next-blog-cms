@@ -3,7 +3,8 @@ import bcrypt from 'bcrypt';
 import prisma from '@/lib/prisma';
 
 export async function POST(request: Request) {
-  const { name, email, password, role } = await request.json();
+  // Future: Utilize the role's value when business allows user to have auth.
+  const { name, email, password } = await request.json();
 
   if (!name || !email || !password) {
     return NextResponse.json(
@@ -13,7 +14,6 @@ export async function POST(request: Request) {
   }
 
   try {
-    // Check if the user already exists
     const existingUser = await prisma.user.findUnique({
       where: { email },
     });
@@ -25,20 +25,20 @@ export async function POST(request: Request) {
       );
     }
 
-    // Hash the password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create the user
     const user = await prisma.user.create({
       data: {
         name,
         email,
         password: hashedPassword,
-        role: role,
       },
     });
 
-    return NextResponse.json({ message: 'User created successfully', user });
+    return NextResponse.json(
+      { message: 'User created successfully', user },
+      { status: 201 }
+    );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
