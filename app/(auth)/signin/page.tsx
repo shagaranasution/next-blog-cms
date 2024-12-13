@@ -43,12 +43,12 @@ export default function LoginPage() {
     } else {
       setLoading(false);
       setError('');
-      router.push('/admin/dashboard');
+      router.push('/dashboard');
     }
   };
 
   if (session) {
-    router.replace('/admin/dashboard');
+    router.replace('/dashboard');
   }
 
   return (

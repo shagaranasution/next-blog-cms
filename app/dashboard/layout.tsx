@@ -12,7 +12,7 @@ export default async function AdminLayout({
         <h1 className="text-2xl font-bold">Admin Dashboard</h1>
         <nav className="flex-1 space-y-4">
           <Link
-            href="/admin/dashboard/articles"
+            href="/dashboard/articles"
             className="block hover:bg-gray-700 p-2 rounded">
             Manage Articles
           </Link>

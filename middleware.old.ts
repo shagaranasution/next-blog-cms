@@ -3,8 +3,8 @@ import { getToken } from 'next-auth/jwt';
 
 export async function middleware(req: NextRequest) {
   const token = await getToken({ req });
-  // Check if the requested route starts with "/admin"
-  const protectedPath = req.nextUrl.pathname.startsWith('/admin');
+  // Check if the requested route starts with "/dashboard"
+  const protectedPath = req.nextUrl.pathname.startsWith('/dashboard');
   if (protectedPath) {
     const sessionToken =
       req.cookies.get('next-auth.session-token') ||
@@ -24,5 +24,5 @@ export async function middleware(req: NextRequest) {
 
 export const config = {
   // Apply middleware to dashboard and its sub-paths
-  matcher: ['/admin/:path*'],
+  matcher: ['/dashboard/:path*'],
 };
