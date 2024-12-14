@@ -8,7 +8,7 @@ export async function POST(request: Request) {
 
   if (!name || !email || !password) {
     return NextResponse.json(
-      { error: 'Missing required fields' },
+      { error: 'Missing required fields.' },
       { status: 400 }
     );
   }
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
     if (existingUser) {
       return NextResponse.json(
-        { error: 'User already exists' },
+        { error: 'User already exists.' },
         { status: 400 }
       );
     }
@@ -36,13 +36,13 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(
-      { message: 'User created successfully', user },
+      { message: 'User created successfully.', user },
       { status: 201 }
     );
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error.' },
       { status: 500 }
     );
   } finally {

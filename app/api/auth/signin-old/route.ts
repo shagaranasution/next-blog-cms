@@ -7,7 +7,7 @@ export async function POST(request: Request) {
 
   if (!email || !password) {
     return NextResponse.json(
-      { error: 'Missing required fields' },
+      { error: 'Missing required fields.' },
       { status: 400 }
     );
   }
@@ -20,7 +20,7 @@ export async function POST(request: Request) {
 
     if (!user) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'Invalid email or password.' },
         { status: 401 }
       );
     }
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     if (!isPasswordValid) {
       return NextResponse.json(
-        { error: 'Invalid email or password' },
+        { error: 'Invalid email or password.' },
         { status: 401 }
       );
     }
@@ -48,7 +48,7 @@ export async function POST(request: Request) {
   } catch (error) {
     console.error(error);
     return NextResponse.json(
-      { error: 'Internal server error' },
+      { error: 'Internal server error.' },
       { status: 500 }
     );
   } finally {
