@@ -18,7 +18,7 @@ export default function ArticlesPage() {
         </Link>
       </div>
 
-      {loading ? <div>Loading..</div> : <ArticlesTable items={articles} />}
+      {loading ? <div>Loading...</div> : <ArticlesTable items={articles} />}
       {error && <div>{error}</div>}
     </div>
   );
