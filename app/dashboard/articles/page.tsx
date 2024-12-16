@@ -1,9 +1,12 @@
+'use client';
 import { ArticlesTable } from '@/components/articles-table';
+import useFetchArticles from '@/hooks/use-fetch-articles';
 
 import { ARTICLE_ITEMS } from '@/lib/mock-data';
 import Link from 'next/link';
 
 export default function ArticlesPage() {
+  const { data: articles, loading, error } = useFetchArticles();
   return (
     <div>
       <div className="flex flex-row justify-between mb-4">
@@ -14,7 +17,9 @@ export default function ArticlesPage() {
           </button>
         </Link>
       </div>
-      <ArticlesTable items={ARTICLE_ITEMS} />
+
+      {loading ? <div>Loading..</div> : <ArticlesTable items={articles} />}
+      {error && <div>{error}</div>}
     </div>
   );
 }

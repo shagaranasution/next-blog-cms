@@ -1,3 +1,4 @@
+import { Prisma } from '@prisma/client';
 import { DefaultUser } from 'next-auth';
 
 declare module 'next-auth' {
@@ -21,15 +22,27 @@ export type UserRole = 'ADMIN' | 'USER';
 
 export type Gander = 'MALE' | 'FEMALE' | 'OTHER';
 
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  password: string;
-  role: UserRole;
-  phone: string | null;
-  birthday: Date | null;
-  gender: Gander | null;
-  createdAt: Date;
-  updatedAt: Date;
-}
+export type PaginationMeta = {
+  total: number;
+  page: number;
+  limit: number;
+  totalPages: number;
+};
+
+export type ArticleWithRelations = Prisma.ArticleGetPayload<{
+  include: {
+    author: {
+      select: {
+        id: true;
+        name: true;
+        email: true;
+      };
+    };
+    images: {
+      select: {
+        id: true;
+        url: true;
+      };
+    };
+  };
+}>;

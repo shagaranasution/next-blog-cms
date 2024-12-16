@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { getToken } from 'next-auth/jwt';
 import prisma from '@/lib/prisma';
+import { fetchArticles } from '@/lib/data';
 
 const createImages = async (imageUrls: string[]) => {
   return imageUrls.map((url) => ({
@@ -23,51 +24,11 @@ export async function GET(req: NextRequest) {
     const page = parseInt(searchParams.get('page') || '1', 10);
     const limit = parseInt(searchParams.get('limit') || '10', 10);
 
-    const offset = (page - 1) * limit;
+    const data = await fetchArticles(page, limit);
 
-    const articles = await prisma.article.findMany({
-      skip: offset,
-      take: limit,
-      include: {
-        author: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-        images: {
-          select: {
-            id: true,
-            url: true,
-          },
-        },
-      },
-      orderBy: {
-        createdAt: 'desc',
-      },
-    });
-
-    const totalArticles = await prisma.article.count();
-
-    return NextResponse.json(
-      {
-        data: articles,
-        meta: {
-          total: totalArticles,
-          page,
-          limit,
-          totalPages: Math.ceil(totalArticles / limit),
-        },
-      },
-      { status: 200 }
-    );
+    return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    console.error('Error fetching articles:', error);
-    return NextResponse.json(
-      { error: 'Failed to fetch articles' },
-      { status: 500 }
-    );
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }
 
