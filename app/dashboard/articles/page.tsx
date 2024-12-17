@@ -6,7 +6,11 @@ import { ARTICLE_ITEMS } from '@/lib/mock-data';
 import Link from 'next/link';
 
 export default function ArticlesPage() {
-  const { data: articles, loading, error } = useFetchArticles();
+  const {
+    data: articles,
+    loading,
+    error,
+  } = useFetchArticles({ dashboard: true });
   return (
     <div>
       <div className="flex flex-row justify-between mb-4">

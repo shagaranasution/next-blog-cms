@@ -66,11 +66,9 @@ export default function CreateArticlePage() {
       if (res.ok) {
         router.push('/dashboard/articles');
       } else {
-        console.error('Failed to create article.');
         setError('Failed to create article.');
       }
     } catch (error) {
-      console.error(error);
       setError(error as any);
     } finally {
       setLoading(false);

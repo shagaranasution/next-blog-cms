@@ -3,12 +3,6 @@ import { getToken } from 'next-auth/jwt';
 import prisma from '@/lib/prisma';
 import { fetchArticles } from '@/lib/data';
 
-const createImages = async (imageUrls: string[]) => {
-  return imageUrls.map((url) => ({
-    url,
-  }));
-};
-
 export async function GET(req: NextRequest) {
   const token = await getToken({ req });
 
@@ -28,9 +22,15 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json(data, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 });
+    return NextResponse.json({ error }, { status: 500 });
   }
 }
+
+const createImages = async (imageUrls: string[]) => {
+  return imageUrls.map((url) => ({
+    url,
+  }));
+};
 
 export async function POST(req: NextRequest) {
   const token = await getToken({ req });
