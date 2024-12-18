@@ -1,3 +1,4 @@
+import { Article } from '@prisma/client';
 import prisma from './prisma';
 import { ArticleWithRelations, PaginationMeta } from '@/types';
 
@@ -49,5 +50,22 @@ export async function fetchArticles(
   } catch (error) {
     console.error('Error fetching articles: ', error);
     throw new Error('Error fetching articles.');
+  }
+}
+
+export async function fetchArticle(id: string): Promise<Article> {
+  try {
+    const data = await prisma.article.findUnique({
+      where: { id },
+    });
+
+    if (!data) {
+      throw new Error('Data not found');
+    }
+
+    return data;
+  } catch (error: any) {
+    console.error('Error fetching articles: ', error.message);
+    throw new Error(`Error fetching articles: ${error.message}.`);
   }
 }
