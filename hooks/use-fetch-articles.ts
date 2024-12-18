@@ -2,24 +2,26 @@ import { ArticleWithRelations } from '@/types';
 import { useEffect, useState } from 'react';
 
 export default function useFetchArticles({
-  dashboard = false,
-  page = 1,
+  initialPage = 1,
   limit = 10,
 }: {
-  dashboard?: boolean;
-  page?: number;
+  initialPage?: number;
   limit?: number;
 }) {
   const [data, setData] = useState<ArticleWithRelations[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<undefined | string>();
+  const [page, setPage] = useState(initialPage);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    fetchData();
-  }, []);
+    fetchData(page);
+  }, [page]);
 
-  const fetchData = async () => {
-    const path = dashboard ? '/api/dashboard/articles' : '/api/articles';
+  const fetchData = async (pageToFetch: number) => {
+    const path = `/api/articles?page=${pageToFetch}&limit=${limit}`;
+    setLoading(true);
+
     try {
       const res = await fetch(path);
 
@@ -28,19 +30,28 @@ export default function useFetchArticles({
         return;
       }
 
-      const { data }: { data: ArticleWithRelations[] } = await res.json();
+      const { data: newData }: { data: ArticleWithRelations[] } =
+        await res.json();
 
-      setData(data);
-    } catch (error) {
-      setError(error as string);
+      setData((prevArticles) => {
+        const existingIds = new Set(prevArticles.map((article) => article.id));
+        const uniqueNewData = newData.filter(
+          (article) => !existingIds.has(article.id)
+        );
+
+        return [...prevArticles, ...uniqueNewData];
+      });
+      setHasMore(newData.length === limit);
+    } catch (error: any) {
+      setError(error.message);
     } finally {
       setLoading(false);
     }
   };
 
-  const refetch = () => {
-    fetchData();
+  const loadMore = () => {
+    if (hasMore) setPage((prevPage) => prevPage + 1);
   };
 
-  return { data, loading, error, refetch };
+  return { data, loading, error, hasMore, loadMore };
 }

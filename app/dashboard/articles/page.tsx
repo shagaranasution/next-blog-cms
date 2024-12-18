@@ -1,16 +1,11 @@
 'use client';
 import { ArticlesTable } from '@/components/articles-table';
-import useFetchArticles from '@/hooks/use-fetch-articles';
+import useFetchArticlesDashboard from '@/hooks/use-fetch-articles-dashboard';
 
-import { ARTICLE_ITEMS } from '@/lib/mock-data';
 import Link from 'next/link';
 
 export default function ArticlesPage() {
-  const {
-    data: articles,
-    loading,
-    error,
-  } = useFetchArticles({ dashboard: true });
+  const { data: articles, loading, error } = useFetchArticlesDashboard({});
   return (
     <div>
       <div className="flex flex-row justify-between mb-4">
