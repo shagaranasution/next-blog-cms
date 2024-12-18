@@ -1,5 +1,4 @@
 import { fetchArticle } from '@/lib/data';
-import Link from 'next/link';
 
 export default async function ArticlesDetailPage({
   params,

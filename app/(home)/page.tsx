@@ -2,7 +2,6 @@
 
 import { ArticlesList } from '@/components/articles-list';
 import useFetchArticles from '@/hooks/use-fetch-articles';
-import Link from 'next/link';
 import { useRef, useCallback } from 'react';
 
 export default function HomePage() {
