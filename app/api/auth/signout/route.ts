@@ -5,12 +5,27 @@ import { authOptions } from '@/lib/auth';
 export async function POST(req: Request) {
   const session = await getServerSession(authOptions);
 
+  const isProduction = process.env.NODE_ENV === 'production';
+
   if (session) {
-    return NextResponse.redirect(new URL('/signin', req.url), {
-      headers: {
-        'Set-Cookie': `next-auth.session-token=; Max-Age=0; Path=/; HttpOnly; SameSite=Lax`,
-      },
+    const response = NextResponse.redirect(new URL('/signin', req.url));
+
+    response.cookies.set('__Secure-next-auth.session-token', '', {
+      maxAge: 0,
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+      secure: isProduction,
     });
+
+    response.cookies.set('next-auth.session-token', '', {
+      maxAge: 0,
+      path: '/',
+      httpOnly: true,
+      sameSite: 'lax',
+    });
+
+    return response;
   }
 
   return NextResponse.redirect(new URL('/signin', req.url));
