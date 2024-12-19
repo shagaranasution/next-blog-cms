@@ -1,36 +1,99 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Next Blog CMS
+
+## Description
+**Next Blog CMS** is a simple content management system built with **Next.js App Router**, leveraging **TypeScript**, **NextAuth**, **bcrypt**, **yup**, and **tailwindcss**. This application serves both regular-user and admin with distinct functionalities:
+
+- **Regular User**: View a list of articles and read article content.
+- **Admin**: Create, read, update, and delete articles with enhanced authorization features.
+
+The backend integrates **Railway** PostgreSQL and uses **Prisma** ORM for database management.
+
+## Features
+### Current Features
+- **Regular User**:
+  - View a list of articles.
+  - Read article details.
+
+- **Admin**:
+  - Authorization-based access.
+  - Create new articles.
+  - View aritcle list.
+  - Read article details (WIP).
+  - Update articles (WIP).
+  - Delete articles (WIP).
+
+### Future Enhancements
+- Implement support for:
+  - Article images.
+  - Comments and replies.
+  - Like functionality for articles and comments.
+- Improved UI for better user experience.
+
+## Tech Stack
+- **Frontend & Backend**: Next.js (App Router)
+- **Database**: PostgreSQL (via Railway.app)
+- **ORM**: Prisma
+- **Authentication**: NextAuth
+- **Styling**: TailwindCSS
+- **Validation**: Yup
+- **Password Hashing**: bcrypt
+- **Programming Language**: TypeScript
+
+## Deployment
+The app is deployed using **Vercel**.
+
+### Demo
+- [Home Page](https://next-blog-cms-shagara-nasutions-projects.vercel.app)
+- [Authentication Page](https://next-blog-cms-shagara-nasutions-projects.vercel.app/signin)
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+Ensure you have the following installed on your system:
+- Node.js
+- npm or yarn
 
+### Clone the Repository
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/shagaranasution/next-blog-cms.git
+cd next-blog-cms
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Environment Variables
+Create a `.env` file in the root directory and configure the following environment variables based on `.env.example`:
+```env
+DATABASE_URL=YOUR_DATABASE_CONNECTION_URL
+NEXTAUTH_URL=YOUR_NEXTAUTH_URL
+NEXTAUTH_SECRET=YOUR_NEXTAUTH_SECRET
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Install Dependencies
+```bash
+npm install
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Set Up Database
+Run the Prisma migrations to set up your database schema:
+```bash
+npx prisma migrate dev
+```
 
-## Learn More
+### Run the App
+To start the development server:
+```bash
+npm run dev
+```
+The app will be available at `http://localhost:3000`.
 
-To learn more about Next.js, take a look at the following resources:
+## Scripts
+- **Start Development**: `npm run dev`
+- **Build for Production**: `npm run build`
+- **Start Production Server**: `npm run start`
+- **Lint Code**: `npm run lint`
+- **Generate Prisma Client**: `npx prisma generate`
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Acknowledgments
+This project is inspired by my interest in learning fullstack development and exploring the use of Next.js, Next Auth and Prisma ORM.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Contact
+For any inquiries, feel free to reach me through [shagaranst@gmail.com](mailto:shagaranst@gmail.com).
