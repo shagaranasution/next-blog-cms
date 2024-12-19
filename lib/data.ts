@@ -1,14 +1,6 @@
-import { Article } from '@prisma/client';
 import prisma from './prisma';
-import { ArticleWithRelations, PaginationMeta } from '@/types';
 
-export async function fetchArticles(
-  page: number,
-  limit: number
-): Promise<{
-  data: ArticleWithRelations[];
-  meta: PaginationMeta;
-}> {
+export async function fetchArticles(page: number, limit: number) {
   const offset = (page - 1) * limit;
 
   try {
@@ -53,7 +45,7 @@ export async function fetchArticles(
   }
 }
 
-export async function fetchArticle(id: string): Promise<Article> {
+export async function fetchArticle(id: string) {
   try {
     const data = await prisma.article.findUnique({
       where: { id },
