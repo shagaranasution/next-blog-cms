@@ -1,4 +1,4 @@
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/prisma/generated/client';
 import { DefaultUser } from 'next-auth';
 
 declare module 'next-auth' {
