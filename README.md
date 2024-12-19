@@ -44,7 +44,7 @@ The app is deployed using **Vercel**.
 
 ### Demo
 - [Home Page](https://next-blog-cms-shagara-nasutions-projects.vercel.app)
-- [Authentication Page](https://next-blog-cms-shagara-nasutions-projects.vercel.app/signin)
+- [Dashboard Page](https://next-blog-cms-shagara-nasutions-projects.vercel.app/dashboard)
 
 ## Getting Started
 
