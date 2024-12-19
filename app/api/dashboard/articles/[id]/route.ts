@@ -23,10 +23,6 @@ export async function PUT(
     );
   }
 
-  if (!id) {
-    return NextResponse.json({ error: 'Article Not Found' }, { status: 401 });
-  }
-
   try {
     const { title, content, images } = await req.json();
 
@@ -61,5 +57,53 @@ export async function PUT(
     );
   } finally {
     prisma.$disconnect();
+  }
+}
+
+export async function DELETE(
+  req: NextRequest,
+  { params }: { params: Promise<{ id: string }> }
+) {
+  const id = (await params).id;
+  const token = await getToken({ req });
+
+  if (!token) {
+    console.error('Unauthorized');
+
+    return NextResponse.json(
+      {
+        error: 'Unauthorized',
+      },
+      {
+        status: 400,
+        headers: { 'Content-Type': 'application/json' },
+      }
+    );
+  }
+
+  try {
+    const deletedArticle = await prisma.article.delete({
+      where: {
+        id,
+      },
+    });
+
+    return NextResponse.json(
+      {
+        message: 'Article deleted successfully.',
+        deletedArticle,
+      },
+      {
+        status: 201,
+      }
+    );
+  } catch (error: any) {
+    console.error(error);
+    return NextResponse.json(
+      {
+        error: `Failed to delete article. ${error.message}.`,
+      },
+      { status: 500 }
+    );
   }
 }
