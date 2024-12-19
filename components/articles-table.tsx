@@ -2,6 +2,7 @@
 
 import { dateToString } from '@/lib/format-date';
 import { ArticleWithRelations } from '@/types';
+import Link from 'next/link';
 
 export type ArticleItemType = ArticleWithRelations;
 
@@ -38,8 +39,13 @@ export function ArticlesTable({ items }: ArticlesTableProps) {
             </td>
             <td className="py-2 px-4 border flex justify-center gap-2">
               <button className="text-green-500 hover:underline">View</button>|
-              <button className="text-blue-500 hover:underline">Edit</button>|
-              <button className="text-red-500 hover:underline">Delete</button>
+              <Link href={`/dashboard/articles/${article.id}/edit`}>
+                <button className="text-blue-500 hover:underline">Edit</button>
+              </Link>
+              |
+              <Link href={`/`}>
+                <button className="text-red-500 hover:underline">Delete</button>
+              </Link>
             </td>
           </tr>
         ))}
