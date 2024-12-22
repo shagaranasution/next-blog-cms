@@ -107,7 +107,6 @@ export function EditArticleForm({ article }: { article: FetchArticleResult }) {
           <input
             id="title"
             type="text"
-            // value={getValues('title')}
             {...register('title')}
             className="w-full border rounded p-2"
           />
@@ -122,7 +121,6 @@ export function EditArticleForm({ article }: { article: FetchArticleResult }) {
           <textarea
             id="content"
             rows={6}
-            // value={getValues('content')}
             {...register('content')}
             className="w-full border rounded p-2"
           />
@@ -138,9 +136,6 @@ export function EditArticleForm({ article }: { article: FetchArticleResult }) {
             id="images"
             type="file"
             multiple
-            // value={(getValues('images') as yup.Maybe<[]>)?.map(
-            //   (image: any) => image.url
-            // )}
             {...register('images')}
             onChange={handleFileChange}
             className="w-full"
