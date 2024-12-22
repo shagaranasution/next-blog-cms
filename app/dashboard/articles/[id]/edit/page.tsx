@@ -1,6 +1,5 @@
 import { EditArticleForm } from '@/components/edit-article-form';
-import { fetchArticle, FetchArticleResult } from '@/lib/data';
-import { Article } from '@/prisma/generated/client';
+import { fetchArticle } from '@/lib/data';
 
 export default async function EditArticlePage({
   params,
