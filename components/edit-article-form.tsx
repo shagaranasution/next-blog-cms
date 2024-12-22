@@ -1,57 +1,72 @@
 'use client';
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import { useEffect, useState } from 'react';
+import { FetchArticleResult } from '@/lib/data';
+import { useRouter } from 'next/navigation';
 
-const schema = yup.object({
+const editArticleSchema = yup.object({
   title: yup.string().required('Title is required'),
   content: yup
     .string()
     .required('Content is required')
-    .min(100, 'Content must be at least 100 characters long'),
+    .min(100, 'Content mus be at least 100 characters long'),
   images: yup
     .mixed()
     .test(
       'fileType',
       'Unsupported file format. Only PNG and JPEG are allowed.',
       (value: any) => {
-        if (!value) return true; // Allow if no files are selected (optional field)
-        return Array.from(value).every((file: any) =>
-          ['image/png', 'image/jpeg'].includes(file?.type)
-        );
+        if (!value) return true;
+
+        return Array.from(value).every((file: any) => [
+          'image/png',
+          'image/jpeg'.includes(file?.type),
+        ]);
       }
     )
     .test('fileSize', 'File size must be less than 5MB', (value: any) => {
-      if (!value) return true; // Allow if no files are selected
+      if (!value) return true;
       return Array.from(value).every(
-        (file: any) => file.size <= 5 * 1024 * 1024 // 5 MB
+        (file: any) => file.size <= 5 * 1024 * 1024
       );
     })
     .nullable()
     .notRequired(),
 });
 
-export default function CreateArticlePage() {
+export function EditArticleForm({ article }: { article: FetchArticleResult }) {
   const router = useRouter();
   const {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm({
-    resolver: yupResolver(schema),
+    resolver: yupResolver(editArticleSchema),
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | undefined>();
 
-  const onSubmit = async (data: yup.InferType<typeof schema>) => {
+  useEffect(() => {
+    reset({
+      title: article.title,
+      content: article.content,
+      images: article.images || null,
+    });
+  }, [article, reset]);
+
+  const onSubmit = async (
+    articleId: string,
+    data: yup.InferType<typeof editArticleSchema>
+  ) => {
     setLoading(true);
     try {
-      const res = await fetch('/api/dashboard/articles', {
-        method: 'POST',
+      const res = await fetch(`/api/dashboard/articles/${articleId}`, {
+        method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
@@ -66,10 +81,10 @@ export default function CreateArticlePage() {
       if (res.ok) {
         router.push('/dashboard/articles');
       } else {
-        setError('Failed to create article.');
+        throw new Error(res.statusText);
       }
     } catch (error: any) {
-      setError(error.message);
+      setError(`Failed to create article. ${error.message}.`);
     } finally {
       setLoading(false);
     }
@@ -81,9 +96,10 @@ export default function CreateArticlePage() {
   };
 
   return (
-    <div className="max-w-2xl">
-      <h1 className="text-3xl font-bold mb-4">Create New Article</h1>
-      <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+    <div>
+      <form
+        onSubmit={handleSubmit(onSubmit.bind(null, article.id))}
+        className="space-y-4">
         <div>
           <label htmlFor="title" className="block font-medium">
             Title
@@ -138,7 +154,7 @@ export default function CreateArticlePage() {
           type="submit"
           className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600"
           disabled={loading}>
-          {loading ? 'Submitting...' : 'Create Article'}
+          {loading ? 'Updating...' : 'Update Article'}
         </button>
       </form>
       {error && <p className="text-red-500">{error}</p>}

@@ -28,21 +28,3 @@ export type PaginationMeta = {
   limit: number;
   totalPages: number;
 };
-
-export type ArticleWithRelations = Prisma.ArticleGetPayload<{
-  include: {
-    author: {
-      select: {
-        id: true;
-        name: true;
-        email: true;
-      };
-    };
-    images: {
-      select: {
-        id: true;
-        url: true;
-      };
-    };
-  };
-}>;
