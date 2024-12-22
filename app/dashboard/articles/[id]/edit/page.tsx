@@ -1,4 +1,6 @@
-import { fetchArticle } from '@/lib/data';
+import { EditArticleForm } from '@/components/edit-article-form';
+import { fetchArticle, FetchArticleResult } from '@/lib/data';
+import { Article } from '@/prisma/generated/client';
 
 export default async function EditArticlePage({
   params,
@@ -9,8 +11,9 @@ export default async function EditArticlePage({
   const article = await fetchArticle(id);
 
   return (
-    <div>
-      <p>Edit {article.title} Page</p>
+    <div className="max-w-2xl">
+      <h1 className="text-3xl font-bold mb-4">Edit Article</h1>
+      <EditArticleForm article={article} />
     </div>
   );
 }

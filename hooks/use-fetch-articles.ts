@@ -1,4 +1,4 @@
-import { ArticleWithRelations } from '@/types';
+import type { ArticleWithRelations } from '@/lib/data';
 import { useEffect, useState } from 'react';
 
 export default function useFetchArticles({

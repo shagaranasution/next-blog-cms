@@ -1,6 +1,34 @@
+import { Prisma } from '@/prisma/generated/client';
 import prisma from './prisma';
+import { PaginationMeta } from '@/types';
 
-export async function fetchArticles(page: number, limit: number) {
+export type ArticleWithRelations = Prisma.ArticleGetPayload<{
+  include: {
+    author: {
+      select: {
+        id: true;
+        name: true;
+        email: true;
+      };
+    };
+    images: {
+      select: {
+        id: true;
+        url: true;
+      };
+    };
+  };
+}>;
+
+export type FetchPaginatedArticlesWithRelationsResult = {
+  data: ArticleWithRelations[];
+  meta: PaginationMeta;
+};
+
+export async function fetchPaginatedArticlesWithRelations(
+  page: number,
+  limit: number
+): Promise<FetchPaginatedArticlesWithRelationsResult> {
   const offset = (page - 1) * limit;
 
   try {
@@ -45,10 +73,27 @@ export async function fetchArticles(page: number, limit: number) {
   }
 }
 
-export async function fetchArticle(id: string) {
+export type FetchArticleResult = Prisma.ArticleGetPayload<{
+  include: {
+    images: {
+      select: {
+        url: true;
+      };
+    };
+  };
+}>;
+
+export async function fetchArticle(id: string): Promise<FetchArticleResult> {
   try {
     const data = await prisma.article.findUnique({
       where: { id },
+      include: {
+        images: {
+          select: {
+            url: true,
+          },
+        },
+      },
     });
 
     if (!data) {

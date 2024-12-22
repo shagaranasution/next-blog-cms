@@ -2,6 +2,12 @@ import prisma from '@/lib/prisma';
 import { getToken } from 'next-auth/jwt';
 import { NextRequest, NextResponse } from 'next/server';
 
+const createImages = async (imageUrls: string[]) => {
+  return imageUrls.map((url) => ({
+    url,
+  }));
+};
+
 export async function PUT(
   req: NextRequest,
   { params }: { params: Promise<{ id: string }> }
@@ -24,7 +30,11 @@ export async function PUT(
   }
 
   try {
-    const { title, content, images } = await req.json();
+    const {
+      title,
+      content,
+      images,
+    }: { title: string; content: string; images?: string[] } = await req.json();
 
     if (!title || !content) {
       return NextResponse.json(
@@ -40,7 +50,9 @@ export async function PUT(
       data: {
         title,
         content,
-        images,
+        images: {
+          create: images ? await createImages(images) : [],
+        },
       },
     });
 

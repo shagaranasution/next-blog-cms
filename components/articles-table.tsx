@@ -1,13 +1,11 @@
 'use client';
 
+import type { ArticleWithRelations } from '@/lib/data';
 import { dateToString } from '@/lib/format-date';
-import { ArticleWithRelations } from '@/types';
 import Link from 'next/link';
 
-export type ArticleItemType = ArticleWithRelations;
-
 type ArticlesTableProps = {
-  items: ArticleItemType[];
+  items: ArticleWithRelations[];
 };
 
 export function ArticlesTable({ items }: ArticlesTableProps) {
