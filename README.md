@@ -18,9 +18,9 @@ The backend integrates **Railway** PostgreSQL and uses **Prisma** ORM for databa
   - Authorization-based access.
   - Create new articles.
   - View aritcle list.
-  - Read article details (WIP).
-  - Update articles (WIP).
-  - Delete articles (WIP).
+  - Preview article details.
+  - Update articles.
+  - Delete articles.
 
 ### Future Enhancements
 - Implement support for:
