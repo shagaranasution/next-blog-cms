@@ -2,6 +2,7 @@
 
 type ModalProps = {
   isOpen: boolean;
+  isLoading?: boolean;
   title: string;
   message: string;
   onConfirm: () => void;
@@ -13,6 +14,7 @@ type ModalProps = {
 
 export function Modal({
   isOpen,
+  isLoading = false,
   title,
   message,
   onConfirm,
@@ -37,6 +39,7 @@ export function Modal({
           </button>
           <button
             onClick={onConfirm}
+            disabled={isLoading}
             className="bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600">
             {confirmText}
           </button>

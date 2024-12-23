@@ -1,5 +1,6 @@
 import React from 'react';
 import Link from 'next/link';
+import { SignOutButton } from '@/components/signout-button';
 
 export default async function AdminLayout({
   children,
@@ -18,13 +19,7 @@ export default async function AdminLayout({
           </Link>
         </nav>
         <div>
-          <form action="/api/auth/signout" method="POST">
-            <button
-              type="submit"
-              className="px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600">
-              Sign Out
-            </button>
-          </form>
+          <SignOutButton />
         </div>
       </aside>
 
