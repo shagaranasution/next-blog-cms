@@ -120,7 +120,7 @@ export function EditArticleForm({ article }: { article: FetchArticleResult }) {
           </label>
           <textarea
             id="content"
-            rows={6}
+            rows={16}
             {...register('content')}
             className="w-full border rounded p-2"
           />
