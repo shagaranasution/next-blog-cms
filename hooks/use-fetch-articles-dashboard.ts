@@ -1,5 +1,15 @@
-import type { ArticleWithRelations } from '@/lib/data';
-import { useEffect, useState } from 'react';
+import type { FetchPaginatedArticlesWithRelationsResult } from '@/lib/data';
+import { useCallback, useEffect, useState } from 'react';
+
+const initialData: FetchPaginatedArticlesWithRelationsResult = {
+  data: [],
+  meta: {
+    page: 1,
+    limit: 1,
+    total: 0,
+    totalPages: 0,
+  },
+};
 
 export default function useFetchArticlesDashboard({
   page = 1,
@@ -8,16 +18,13 @@ export default function useFetchArticlesDashboard({
   page?: number;
   limit?: number;
 }) {
-  const [data, setData] = useState<ArticleWithRelations[]>([]);
+  const [data, setData] =
+    useState<FetchPaginatedArticlesWithRelationsResult>(initialData);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<undefined | string>();
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  const fetchData = async () => {
-    const path = '/api/dashboard/articles';
+  const fetchData = useCallback(async () => {
+    const path = `/api/dashboard/articles?page=${page}&limit=${limit}`;
 
     try {
       const res = await fetch(path);
@@ -27,7 +34,7 @@ export default function useFetchArticlesDashboard({
         return;
       }
 
-      const { data }: { data: ArticleWithRelations[] } = await res.json();
+      const data: FetchPaginatedArticlesWithRelationsResult = await res.json();
 
       setData(data);
     } catch (error) {
@@ -35,7 +42,11 @@ export default function useFetchArticlesDashboard({
     } finally {
       setLoading(false);
     }
-  };
+  }, [page, limit]);
+
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
   const refetch = () => {
     fetchData();

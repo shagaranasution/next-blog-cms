@@ -1,11 +1,17 @@
 'use client';
 import { ArticlesTable } from '@/components/articles-table';
+import { Pagination } from '@/components/pagination';
 import useFetchArticlesDashboard from '@/hooks/use-fetch-articles-dashboard';
-
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 
 export default function ArticlesPage() {
-  const { data: articles, loading, error } = useFetchArticlesDashboard({});
+  const searchParams = useSearchParams();
+  const page = Number(searchParams.get('page')) || 1;
+  const limit = Number(searchParams.get('limit')) || 10;
+  const { data, loading, error } = useFetchArticlesDashboard({ page, limit });
+  const { data: articles, meta } = data;
+
   return (
     <div>
       <div className="flex flex-row justify-between mb-4">
@@ -17,7 +23,14 @@ export default function ArticlesPage() {
         </Link>
       </div>
 
-      {loading ? <div>Loading...</div> : <ArticlesTable items={articles} />}
+      {loading ? (
+        <div>Loading...</div>
+      ) : (
+        <>
+          <ArticlesTable items={articles} />
+          <Pagination totalPages={meta.totalPages} />
+        </>
+      )}
       {error && <div>{error}</div>}
     </div>
   );
