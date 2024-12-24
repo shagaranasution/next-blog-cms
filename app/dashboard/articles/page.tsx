@@ -4,6 +4,7 @@ import { Pagination } from '@/components/pagination';
 import useFetchArticlesDashboard from '@/hooks/use-fetch-articles-dashboard';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
+import { Suspense } from 'react';
 
 export default function ArticlesPage() {
   const searchParams = useSearchParams();
@@ -26,10 +27,10 @@ export default function ArticlesPage() {
       {loading ? (
         <div>Loading...</div>
       ) : (
-        <>
+        <Suspense>
           <ArticlesTable items={articles} />
           <Pagination totalPages={meta.totalPages} />
-        </>
+        </Suspense>
       )}
       {error && <div>{error}</div>}
     </div>
