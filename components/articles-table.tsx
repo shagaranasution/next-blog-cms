@@ -3,7 +3,7 @@
 import type { ArticleWithRelations } from '@/lib/data';
 import { dateToString } from '@/lib/format-date';
 import Link from 'next/link';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Modal } from './modal';
 
 type ArticlesTableProps = {
@@ -18,6 +18,10 @@ export function ArticlesTable({ items: initialItems }: ArticlesTableProps) {
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(
     null
   );
+
+  useEffect(() => {
+    setItems(initialItems);
+  }, [initialItems]);
 
   const handleDeletButtonClick = (articleId: string) => {
     setSelectedArticleId(articleId);
