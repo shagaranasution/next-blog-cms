@@ -1,4 +1,5 @@
 import { fetchArticle } from '@/lib/data';
+import PROLOGUE_ARTICLE from '@/prologue-article';
 
 export default async function ArticlesDetailPage({
   params,
@@ -6,7 +7,7 @@ export default async function ArticlesDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const id = (await params).id;
-  const article = await fetchArticle(id);
+  const article = id !== '0' ? await fetchArticle(id) : PROLOGUE_ARTICLE;
 
   return (
     <div className="max-w-2xl mx-auto">

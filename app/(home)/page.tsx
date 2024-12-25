@@ -12,6 +12,7 @@ export default function HomePage() {
     hasMore,
     loadMore,
   } = useFetchArticles({});
+
   const observer = useRef<IntersectionObserver | null>(null);
 
   const lastArticleRef = useCallback(
